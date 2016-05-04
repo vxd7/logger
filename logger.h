@@ -13,6 +13,9 @@
 #ifndef _GLIBCXX_STRING
 #include <string>
 #endif
+#ifndef _GLIBCXX_CSTRING
+#include <cstring>
+#endif
 #ifndef _GLIBCXX_CSTDIO
 #include <cstdio>
 #endif
@@ -117,12 +120,14 @@ TLogType& Log::LoggingType()
 	return loggingType;
 }
 
-void Log::SetLoggingType(TLogType type, const char *fname)
+void Log::SetLoggingType(TLogType type, const char *fname = "")
 {
 	LoggingType() = type;
 
 	if(type == _file)
 	{
+		if(strcmp(fname, "") == 0) //check if the user forgot to include valid filename
+			return;
 		SetInterface() -> OpenStream(fname);
 	}
 }
